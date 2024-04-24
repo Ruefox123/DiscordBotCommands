@@ -115,10 +115,10 @@
             const command = `!!mute ${userId} ${muteDuration} ${reason}`;
             document.getElementById('output').textContent = command;
 
-            // Set the value of the hidden input
+
             document.getElementById('generated-command').value = command;
 
-            // Copy to clipboard
+
             const copyText = document.getElementById('generated-command');
             copyText.select();
             document.execCommand('copy');
