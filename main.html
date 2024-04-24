@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Command Generator</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+
+    button {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    #output {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+    p{
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+<body>
+    <h1>Discord Bot Command Generator</h1>
+    <form id="command-form">
+        <table>
+            <tr>
+                <td>
+                    <label for="user-id">User ID:</label>
+                    <input id="id" name="id" type="number" required min="0">
+                </td>
+                <td>
+                    <label for="mute-duration">Mute Duration:</label>
+                    <input type="text" id="mute-duration" placeholder="Enter mute duration (e.g., 2d)">
+                </td>
+                <td>
+                    <label for="reason">Reason:</label>
+                    <select id="reason">
+                        <option value="New account boosting advertising">New account boosting advertising</option>
+                        <option value="New Account BST attempt">New Account BST attempt</option>
+                        <option value="Boosting after warning">Boosting after warning</option>
+                        <option value="Rank Boosting/Carry/Push for cash or any type of transaction/Gifting/by account sharing and other use of BST; which is a Supercell Terms of Service violation. Any continuation after this will be a longer mute/ban.">Rank Boosting warning</option>
+                        <option value="Please use the Brawl Recruit server for club advertising and for friend invites. You can join the server using this link: https://discord.gg/dMNxAZ2 . Continuation will result in mute / ban.">Club Recruit warning</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+        <button type="button" onclick="generateCommand()">Generate Command</button>
+        <input type="text" id="generated-command" style="display: none;">
+    </form>
+
+    <p id="output"></p>
+
+
+    <script>
+        function generateCommand() {
+            const userId = document.getElementById('id').value;
+            const muteDuration = document.getElementById('mute-duration').value || '';
+            const reason = document.getElementById('reason').value;
+
+            const command = `!!mute ${userId} ${muteDuration} ${reason}`;
+            document.getElementById('output').textContent = command;
+
+            // Set the value of the hidden input
+            document.getElementById('generated-command').value = command;
+
+            // Copy to clipboard
+            const copyText = document.getElementById('generated-command');
+            copyText.select();
+            document.execCommand('copy');
+        }
+    </script>
+</body>
+</html>
