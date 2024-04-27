@@ -100,8 +100,8 @@
                     <label for="reason">Reason:</label>
                     <select id="reason">
                         <option value="New account boosting advertising">New account boosting advertising</option>
-                        <option value="New Account BST attempt">New Account BST attempt</option>
-                        <option value="Boosting after warning">Boosting after warning</option>
+                        <option value="New account BST attempt">New Account BST attempt</option>
+                        <option value="Rank boosting advertising after warning">Rank boosting after warning</option>
                         <option value="Rank Boosting/Carry/Push for cash or any type of transaction/Gifting/by account sharing and other use of BST; which is a Supercell Terms of Service violation. Any continuation after this will be a longer mute/ban.">Rank Boosting warning</option>
                         <option value="New joiner Server Boost Advertising">New joiner Server Ad Boosting</option>
                         <option value="Please use the Brawl Recruit server for club advertising and for friend invites. You can join the server using this link: https://discord.gg/dMNxAZ2 . Continuation will result in mute / ban.">Club Recruit warning</option>
@@ -152,10 +152,8 @@
                 <button type="clear_button" onclick="generateClearCommand()">Generate Clear Command</button>
             </td>
         </tr>
-        <tr>
-            <td><p id="output_clean" style="cursor: pointer;" onclick="copyToClipboardClean()">Click to copy the clear command</p></td>
-        </tr>
     </table>
+    <p id="output_clean" style="cursor: pointer;" onclick="copyToClipboardClean()">Click to copy the clear command</p>
 </form>
 
 
@@ -206,7 +204,13 @@
         }
 
         function copyToClipboardClean(){
-            alert('Clear Command copied to clipboard!');
+            const textToCopy = document.getElementById('output_clean').textContent;
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                alert('Clear command copied to clipboard!');
+            })
+            .catch(function(error) {
+                alert('Error copying text: ' + error);
+            });
         }
     </script>
 </body>
