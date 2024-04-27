@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Bot Command Generator</title>
+    <title>Discord Zeppelin Mute & Clear Command Generator</title>
 </head>
 <style>
     body {
@@ -59,6 +59,13 @@
         margin-top: 20px;
         font-weight: bold;
     }
+
+    #output_clean{
+        margin-top: 10px;
+        font-weight: bold;
+        background-color: bisque;
+    }
+
     p{
         max-width: 400px;
         margin: 0 auto;
@@ -67,9 +74,13 @@
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+    #clear-form{
+        display: none;
+        cursor: pointer;
+    }
 </style>
 <body>
-    <h1>Discord Bot Mute Command Generator</h1>
+    <h1>Discord Zeppelin Mute & Clear Command Generator</h1>
     <form id="command-form">
         <table>
             <tr>
@@ -81,7 +92,7 @@
             <tr>
                 <td>
                     <label for="mute-duration">Mute Duration:</label>
-                    <input type="text" id="mute-duration" placeholder="Enter mute duration (e.g., 2d) Null is Unlimited duration">
+                    <input type="text" id="mute-duration" placeholder="Enter mute duration (e.g., 2d, Empty means unlimited mute.)">
                 </td>
             </tr>
             <tr>
@@ -92,17 +103,63 @@
                         <option value="New Account BST attempt">New Account BST attempt</option>
                         <option value="Boosting after warning">Boosting after warning</option>
                         <option value="Rank Boosting/Carry/Push for cash or any type of transaction/Gifting/by account sharing and other use of BST; which is a Supercell Terms of Service violation. Any continuation after this will be a longer mute/ban.">Rank Boosting warning</option>
+                        <option value="New joiner Server Boost Advertising">New joiner Server Ad Boosting</option>
                         <option value="Please use the Brawl Recruit server for club advertising and for friend invites. You can join the server using this link: https://discord.gg/dMNxAZ2 . Continuation will result in mute / ban.">Club Recruit warning</option>
+
                     </select>
                 </td>
             </tr>
-            <tr>
-                <td></td>
-            </tr>
         </table>
         <button type="button" onclick="generateCommand()">Generate Command</button>
+        <button type="button" onclick="clearCmdForm()">Add clear command?</button>
     </form>
     <p id="output" style="cursor: pointer;" onclick="copyToClipboard()">Click to copy the command</p>
+</br>
+
+<form id="clear-form" onsubmit="event.preventDefault();">
+    <table>
+        <tr>
+            <td>    
+                <label for="message-amount">Message Amount:</label>
+                <input type="number" id="message-amount" placeholder="Enter message amount" required>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="channel-id">Channel:</label>
+                <select id="channel-id">
+                    <option value="<#324652647221166080>">#general-chat</option>
+                    <option value="<#359543440083779585>">#brawl-chat</option>
+                    <option value="<#324565146791837696>">#off-topic</option>
+                    <option value="<#325116706676801536>">#looking-for-group</option>
+                    <option value="<#640363655820738570>">#lfg-ranked</option>
+                    <option value="<#>">empty</option>
+                    <option value="<#>">empty</option>
+                    <option value="<#>">empty</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    do -update?
+                    <input type="checkbox" id="update-checkbox">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="clear_button" onclick="generateClearCommand()">Generate Clear Command</button>
+            </td>
+        </tr>
+        <tr>
+            <td><p id="output_clean" style="cursor: pointer;" onclick="copyToClipboardClean()">Click to copy the clear command</p></td>
+        </tr>
+    </table>
+</form>
+
+
+
 
     <script>
         function generateCommand() {
@@ -111,8 +168,32 @@
             const reason = document.getElementById('reason').value;
 
             const command = `!!mute ${userId} ${muteDuration} ${reason}`;
-            document.getElementById('output').textContent = command;
+            document.getElementById('output').textContent = command; 
         }
+
+        // Generate clear form
+        function clearCmdForm() {
+            document.getElementById('clear-form').style.display = 'block';
+        }
+
+        // Clear command
+        function generateClearCommand() {
+            // Show the form
+            clearCmdForm();
+
+            const messageAmount = document.getElementById('message-amount').value;
+            const userId = document.getElementById('id').value;
+            const channelId = document.getElementById('channel-id').value;
+            const includeUpdate = document.getElementById('update-checkbox').checked;
+
+            let command = `!!clear ${messageAmount} -u ${userId} -c ${channelId}`;
+            if (includeUpdate) {
+                command += ' -update';
+            }
+
+            document.getElementById('output_clean').textContent = command;
+}
+
 
         function copyToClipboard() {
             const textToCopy = document.getElementById('output').textContent;
@@ -122,6 +203,10 @@
             .catch(function(error) {
                 alert('Error copying text: ' + error);
             });
+        }
+
+        function copyToClipboardClean(){
+            alert('Clear Command copied to clipboard!');
         }
     </script>
 </body>
